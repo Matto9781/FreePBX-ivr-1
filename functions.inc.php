@@ -57,11 +57,6 @@ function ivr_get_config($engine) {
 			$ext->splice('macro-dial','ANSWER','transfer-call', new ext_goto('${IVR_CONTEXT},return,1'));
 			$ext->splice('macro-dial','NOANSWER','bye', new ext_gotoif('$["${ivrreturn}" = "1"]','${IVR_CONTEXT},return,1'));
 			
-			break;
-		default:
-			break;
-	}
-}
 
 			if (function_exists('queues_list')) {
 				//draw a list of ivrs included by any queues
