@@ -235,7 +235,7 @@ function ivr_get_config($engine) {
 					$label = 'final';
 					switch ($ivr['invalid_recording']) {
 						case 'default':
-							$ext->add($c, 'i', $label, new ext_playback('no-valid-responce-transfering'));
+							$ext->add($c, 'i', $label, new ext_playback('ivr-goodbye'));
 							$label ='';
 							break;
 						case '':
@@ -255,7 +255,7 @@ function ivr_get_config($engine) {
 					}
 				} else {
 					// If no invalid destination provided we need to do something
-					$ext->add($c, 'i', '', new ext_playback('sorry-youre-having-problems'));
+					$ext->add($c, 'i', '', new ext_playback('ivr-goodbye'));
 					$ext->add($c, 'i', '', new ext_goto('1','hang'));
 				}
 
@@ -267,7 +267,7 @@ function ivr_get_config($engine) {
 
 						switch ($ivr['timeout_retry_recording']) {
 							case 'default':
-								$timeout_annoucement = 'no-valid-responce-pls-try-again';
+								$timeout_annoucement = 'ivr-invalid';
 								break;
 							case '':
 								$timeout_annoucement = '';
@@ -287,7 +287,7 @@ function ivr_get_config($engine) {
 					$label = 'final';
 					switch ($ivr['timeout_recording']) {
 						case 'default':
-							$ext->add($c, 't', $label, new ext_playback('no-valid-responce-transfering'));
+							$ext->add($c, 't', $label, new ext_playback('ivr-goodbye'));
 							$label = '';
 							break;
 						case '':
@@ -307,7 +307,7 @@ function ivr_get_config($engine) {
 					}
 				} else {
 					// If no invalid destination provided we need to do something
-					$ext->add($c, 't', '', new ext_playback('sorry-youre-having-problems'));
+					$ext->add($c, 't', '', new ext_playback('ivr-goodbye'));
 					$ext->add($c, 't', '', new ext_goto('1','hang'));
 				}
 
@@ -320,7 +320,7 @@ function ivr_get_config($engine) {
 
 				//h extension
 				$ext->add($c, 'h', '', new ext_hangup(''));
-				$ext->add($c, 'hang', '', new ext_playback('vm-goodbye'));
+				$ext->add($c, 'hang', '', new ext_playback('ivr-goodbye'));
 				$ext->add($c, 'hang', '', new ext_hangup(''));
 			}
 
