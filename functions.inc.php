@@ -676,5 +676,5 @@ function ivr_recordings_usage($recording_id) {
 		return $usage_arr;
 	}
 }
-
+ 
 ?>
