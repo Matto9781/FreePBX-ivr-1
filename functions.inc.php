@@ -53,8 +53,15 @@ function ivr_get_config($engine) {
 			$ext->splice('macro-dial','s','nddialapp', new ext_execif('$["${ivrreturn}" = "1"]', 'Set', 'ds=${ds}g'));
 			$ext->splice('macro-dial','s','hsdialapp', new ext_execif('$["${ivrreturn}" = "1"]', 'Set', 'ds=${ds}g'));
 
-			$ext->splice('macro-dial','ANSWER','bye', new ext_gotoif('$["${ivrreturn}" = "1"]','${IVR_CONTEXT},return,1'));
+			$ext->splice('macro-dial','ANSWER','play-recording', new ext_Playback('your-being-connected'));
+			$ext->splice('macro-dial','ANSWER','transfer-call', new ext_goto('${IVR_CONTEXT},return,1'));
 			$ext->splice('macro-dial','NOANSWER','bye', new ext_gotoif('$["${ivrreturn}" = "1"]','${IVR_CONTEXT},return,1'));
+			
+			break;
+		default:
+			break;
+	}
+}
 
 			if (function_exists('queues_list')) {
 				//draw a list of ivrs included by any queues
@@ -123,7 +130,7 @@ function ivr_get_config($engine) {
 						$ext->add($c, 's', '', new ext_gotoif('$["${READSTATUS}" = "TIMEOUT" & "${DIGITS}" != ""]','i,1'));
 						$ext->add($c, 's', '', new ext_gotoif('$["${READSTATUS}" = "TIMEOUT" & "${IVREXT}" = ""]','t,1'));
 						$ext->add($c, 's', '', new ext_noop('${DB(DEVICE/${DIGITS}${IVREXT}/user)}'));
-						if ($ivr['directdial']!= "" && $ivr['directdial'] !="Disabled" ) {
+						if ($ivr['directdial']!= "" && $ivr['directdial'] !="Enabled" ) {
 							if ($ivr['directdial'] == 'ext-local') {
 								$ext->add($c, 's', '', new ext_execif('$["${DB(DEVICE/${DIGITS}${IVREXT}/user)}" != ""]', 'Set', 'LOCALEXT=1'));
 								$ext->add($c, 's', '', new ext_gotoif('$["${LOCALEXT}" = "1"]','from-did-direct-ivr,${DIGITS}${IVREXT},1'));
@@ -215,7 +222,7 @@ function ivr_get_config($engine) {
 						$ext->add($c, 'i', '',	new ext_gotoif('$[${INVALID_LOOPCOUNT} > ' . $ivr['invalid_loops'] . ']','final'));
 						switch ($ivr['invalid_retry_recording']) {
 							case 'default':
-								$invalid_annoucement = 'no-valid-responce-pls-try-again';
+								$invalid_annoucement = 'ivr-invalid';
 								break;
 							case '':
 								$invalid_annoucement = '';
